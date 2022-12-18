@@ -12,7 +12,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mosca": "^2.8.3",
-    "mqtt": "^4.3.7"
+    "@prisma/client": "^4.4.0",
+    "aedes": "^0.48.1",
+    "mqtt": "^4.3.7",
+    "prisma": "^4.7.1",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.18.4"
   }
 }

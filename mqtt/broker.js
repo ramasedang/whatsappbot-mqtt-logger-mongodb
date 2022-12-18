@@ -1,12 +1,14 @@
-import mosca from 'mosca';
+import Aedes from "aedes";
+import { createServer } from "net";
 
-const settings = {
-    port:1883
-    }
+const aedes = Aedes();
+const server = createServer(aedes.handle);
 
-const server = new mosca.Server(settings);
+const broker_1 = async () => {
+    server.listen(1883, function () {
+        console.log("Broker1 started and listening on port 1883");
+    });
+}
+broker_1();
 
-server.on('ready', function(){
-console.log("Status: Ready\n");
-console.log("*Broker siap menerima & mengirim data.\n");
-});
+

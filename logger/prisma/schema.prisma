@@ -1,0 +1,19 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model logger {
+    id              Int      @id @default(autoincrement())
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+    deletedAt       DateTime? @map("deleted_at")
+    phone_number    String
+    message         String
+    topic           String
+}
+
