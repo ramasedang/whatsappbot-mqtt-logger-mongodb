@@ -1,0 +1,18 @@
+{
+  "name": "wabot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node broker.js && node publisher.js && node subscriber.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mosca": "^2.8.3",
+    "mqtt": "^4.3.7"
+  }
+}
