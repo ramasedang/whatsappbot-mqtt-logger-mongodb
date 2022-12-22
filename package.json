@@ -14,6 +14,8 @@
   "dependencies": {
     "@prisma/client": "^4.4.0",
     "aedes": "^0.48.1",
+    "aedes-server-factory": "^0.2.1",
+    "fs": "^0.0.1-security",
     "mqtt": "^4.3.7",
     "prisma": "^4.7.1",
     "qrcode-terminal": "^0.12.0",

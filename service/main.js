@@ -1,34 +1,52 @@
 import mqtt from "mqtt";
-import getLogService from "./resources/getLogService.js";
+import { deleteAll, getLogService } from "./resources/getLogService.js";
 const wa = mqtt.connect("mqtt://localhost:1883");
+const topic1 = "broker1";
+const topic2 = "broker2";
 
-wa.on("connect", function () {
-  wa.subscribe("broker1");
+async function sendWa(phone, message, topic) {
+  let data = {
+    phone_number: phone,
+    message: message,
+    topic: topic,
+  };
+  wa.publish(topic2, JSON.stringify(data));
+}
+
+wa.on("connect",  () => {
+  wa.subscribe(topic1);
 });
 
-wa.on("message", async function (topic, message) {
-  var context = message.toString();
-  let msg = context.split(" : ")[1];
-  let phone = context.split(" : ")[0];
+wa.on("message", async (topic, message) => {
+  var data = JSON.parse(message.toString());
+  let msg = data.msg;
+  let targetSender = data.targetSender;
+  switch (msg) {
+    case "!halo":
+      sendWa(targetSender, "Halo juga " + data.name, topic);
+      break;
 
-  if (msg === "Hello") {
-    wa.publish("broker2", phone + " : " + msg);
-  }
-  if (msg === "Getlog") {
-    let log = await getLogService(phone);
-    let data = {
-      phone_number: phone,
-      message: JSON.stringify(log),
-      topic: topic,
-    };
-    wa.publish("broker2", JSON.stringify(data));
-  } else {
-    let data = {
-      phone_number: phone,
-      message: "Command not found",
-      topic: topic,
-    };
+    case "!log":
+      let log = await getLogService();
+      sendWa(targetSender, log, topic);
+      break;
 
-    wa.publish("broker2", JSON.stringify(data));
+    case "!delete":
+      let deleteLog = await deleteAll();
+      sendWa(targetSender, "Berhasil mengahpus log", topic);
+      break;
+
+    case "!help":
+      sendWa(
+        targetSender,
+        "Berikut adalah perintah yang tersedia:\n!halo\n!log\n!delete\n!help",
+        topic
+      );
+      break;
+
+    // masukan perintah lainnya disini
+    default:
+      sendWa(targetSender, "Maaf, perintah tidak dikenali", topic);
+      break;
   }
 });

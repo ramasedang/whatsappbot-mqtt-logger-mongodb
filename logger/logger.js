@@ -1,25 +1,25 @@
-import mqtt from 'mqtt';
-import { PrismaClient } from '@prisma/client';
+import mqtt from "mqtt";
+import { PrismaClient } from "@prisma/client";
 
-const client = mqtt.connect('mqtt://localhost:1883');
-const prisma = new PrismaClient()
+const client = mqtt.connect("mqtt://localhost:1883");
+const prisma = new PrismaClient();
 
-client.on('connect', function () {
-    client.subscribe('broker1')
-    console.log('Connected to MQTT')
-})
+client.on("connect", () => {
+  client.subscribe("broker1");
+  console.log("Connected to MQTT");
+});
 
-client.on('message', async function (topic, message) {
-    let messageString = message.toString();
-    let context = messageString.split(" : ")[1];
-    let phone =  messageString.split(" : ")[0];
-    console.log(phone, context, topic)
+client.on("message", async (topic, message) => {
+  var data = JSON.parse(message.toString());
 
-    await prisma.logger.create({
-        data :{
-            phone_number: phone,
-            message: context,
-            topic: topic
-        }
-    })
-})
+  await prisma.loggers.create({
+    data: {
+      no_sender: data.no_sender,
+      no_group: data.no_group,
+      name: data.name,
+      message: data.msg,
+      quoted_message: data.quote,
+      topic: topic,
+    },
+  });
+});

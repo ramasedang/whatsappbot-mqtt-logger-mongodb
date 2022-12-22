@@ -1,19 +1,20 @@
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
 }
 
-model logger {
-    id              Int      @id @default(autoincrement())
-    createdAt       DateTime @default(now())
-    updatedAt       DateTime @updatedAt
-    deletedAt       DateTime? @map("deleted_at")
-    phone_number    String
-    message         String
-    topic           String
+model loggers {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  no_sender     String 
+  no_group      String  
+  name      String
+  message   String
+  quoted_message String
+  topic     String
+  created_at DateTime @default(now())
 }
-
