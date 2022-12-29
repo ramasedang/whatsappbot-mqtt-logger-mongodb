@@ -1,5 +1,6 @@
 import mqtt from "mqtt";
 import { deleteAll, getLogService } from "./resources/getLogService.js";
+import getNilai from "./resources/getNilai/getNilai.js";
 const wa = mqtt.connect("mqtt://8.219.195.118:1883");
 const topic1 = "broker1";
 const topic2 = "broker2";
@@ -13,51 +14,45 @@ async function sendWa(phone, message, topic) {
   wa.publish(topic2, JSON.stringify(data));
 }
 
-wa.on("connect",  () => {
-  wa.subscribe(topic1); 
+wa.on("connect", () => {
+  wa.subscribe(topic1);
 });
 
 wa.on("message", async (topic, message) => {
   var data = JSON.parse(message.toString());
-  let msg = data.msg;
+  var msg = data.msg;
+  const quote = data.quote;
   let targetSender = data.targetSender;
   console.log(data);
-  switch (msg) {
-    case "!halo":
-      await sendWa(targetSender, "Halo juga " + data.name, topic);
-      break;
+  const spasi = /\s/;
+  if (spasi.test(msg)) {
+    msg = msg.split(" ");
+  }
+  console.log(quote);
+  // System Command
+  if (quote != null && msg === "!repeat") {
+    msg = quote.split(" ");
+  }
 
-    case "!log":
-      try {
-      let log =await getLogService();
-      await sendWa(targetSender, log, topic);
-      break;
-      } catch (error) {
-        console.log(error);
-        break;
-      }
-
-    case "!delete":
-      try {
-      await deleteAll();
-      await sendWa(targetSender, "Berhasil mengahpus log", topic);
-      break;
-      } catch (error) {
-        console.log(error);
-        break;
-      }
-
-    case "!help":
-      await sendWa(
-        targetSender,
-        "Berikut adalah perintah yang tersedia:\n!halo\n!log\n!delete\n!help",
-        topic
-      );
-      break;
-
-    // masukan perintah lainnya disini
-    default:
-      await sendWa(targetSender, "Maaf, perintah tidak dikenali", topic);
-      break;
+  // Custom Command
+  if (msg === "!help") {
+    await sendWa(
+      targetSender,
+      "List perintah: \n!nilai [NRP] [Password] \n!help",
+      topic1
+    );
+  } else if ((msg[0] || msg) == "!nilai") {
+    try {
+      const nrp = msg[1];
+      const password = msg[2];
+      console.log(nrp, password);
+      await sendWa(targetSender, "Sedang mengambil data...", topic1);
+      let result = await getNilai(nrp, password);
+      await sendWa(targetSender, result, topic1);
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    await sendWa(targetSender, "Maaf, perintah tidak ditemukan", topic1);
   }
 });
