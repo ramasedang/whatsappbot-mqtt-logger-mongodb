@@ -2,7 +2,7 @@ import pkg from "whatsapp-web.js";
 import qrcode from "qrcode-terminal";
 import mqtt from "mqtt";
 
-const waMqtt = mqtt.connect("mqtt://localhost:1883");
+const waMqtt = mqtt.connect("ws://localhost:1883");
 
 const { Client, LocalAuth } = pkg;
 
@@ -32,9 +32,9 @@ const waUP3 = () => {
       no_group = message.from.split("@")[0];
     }
     let msg = message.body;
-    console.log(
-      JSON.stringify({ name, no_sender, no_group, msg, quote, targetSender })
-    );
+    // console.log(
+    //   JSON.stringify({ name, no_sender, no_group, msg, quote, targetSender })
+    // );
     waMqtt.publish(
       "broker1",
       JSON.stringify({ name, no_sender, no_group, msg, quote, targetSender })
@@ -50,7 +50,7 @@ const waUP3 = () => {
     let phone = data.phone_number;
     let msg = data.message;
     wa.sendMessage(phone, msg);
-    console.log(data);
+    // console.log(data);
   });
 
   wa.initialize();

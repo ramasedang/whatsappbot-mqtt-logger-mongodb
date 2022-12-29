@@ -1,6 +1,6 @@
 import mqtt from "mqtt";
 import { deleteAll, getLogService } from "./resources/getLogService.js";
-const wa = mqtt.connect("mqtt://localhost:1883");
+const wa = mqtt.connect("ws://localhost:1883");
 const topic1 = "broker1";
 const topic2 = "broker2";
 
@@ -14,13 +14,14 @@ async function sendWa(phone, message, topic) {
 }
 
 wa.on("connect",  () => {
-  wa.subscribe(topic1);
+  wa.subscribe(topic1); 
 });
 
 wa.on("message", async (topic, message) => {
   var data = JSON.parse(message.toString());
   let msg = data.msg;
   let targetSender = data.targetSender;
+  console.log(data);
   switch (msg) {
     case "!halo":
       sendWa(targetSender, "Halo juga " + data.name, topic);

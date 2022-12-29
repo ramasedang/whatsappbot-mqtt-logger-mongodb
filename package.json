@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node broker.js && node publisher.js && node subscriber.js"
+    "start": "node ./whatsapp/waUP3.js && node ./mqtt/broker.js && node ./service/main.js"
   },
   "keywords": [],
   "author": "",
@@ -15,8 +15,9 @@
     "@prisma/client": "^4.4.0",
     "aedes": "^0.48.1",
     "aedes-server-factory": "^0.2.1",
-    "fs": "^0.0.1-security",
+    "fs-extra": "^11.1.0",
     "mqtt": "^4.3.7",
+    "nodemailer": "^6.8.0",
     "prisma": "^4.7.1",
     "qrcode-terminal": "^0.12.0",
     "whatsapp-web.js": "^1.18.4"
