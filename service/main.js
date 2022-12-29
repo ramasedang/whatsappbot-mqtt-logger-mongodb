@@ -22,6 +22,7 @@ wa.on("message", async (topic, message) => {
   let msg = data.msg;
   let targetSender = data.targetSender;
   console.log(data);
+  sendSeen(targetSender, topic);
   switch (msg) {
     case "!halo":
       await sendWa(targetSender, "Halo juga " + data.name, topic);
