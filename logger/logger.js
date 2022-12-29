@@ -1,7 +1,7 @@
 import mqtt from "mqtt";
 import { PrismaClient } from "@prisma/client";
 
-const client = mqtt.connect("mqtt://localhost:1883");
+const client = mqtt.connect("mqtt://8.219.195.118:1883");
 const prisma = new PrismaClient();
 
 client.on("connect", () => {

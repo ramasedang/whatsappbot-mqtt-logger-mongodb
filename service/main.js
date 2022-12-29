@@ -28,14 +28,22 @@ wa.on("message", async (topic, message) => {
       break;
 
     case "!log":
-      let log = await getLogService();
+      try {
+        let log = await getLogService();
       sendWa(targetSender, log, topic);
       break;
+      } catch (error) {
+        console.log(error);
+      }
 
     case "!delete":
-      let deleteLog = await deleteAll();
+      try {
+        let deleteLog = await deleteAll();
       sendWa(targetSender, "Berhasil mengahpus log", topic);
       break;
+      } catch (error) {
+        console.log(error);
+      }
 
     case "!help":
       sendWa(

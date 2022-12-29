@@ -21,6 +21,6 @@ export async function getLogService() {
 }
 
 export async function deleteAll() {
-  let log = await prisma.loggers.deleteMany();
-  return log;
+  await prisma.loggers.deleteMany();
+  return "Delete all data";
 }
