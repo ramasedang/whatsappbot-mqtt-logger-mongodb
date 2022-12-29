@@ -1,6 +1,6 @@
 import mqtt from "mqtt";
 import { deleteAll, getLogService } from "./resources/getLogService.js";
-const wa = mqtt.connect("ws://localhost:1883");
+const wa = mqtt.connect("mqtt://8.219.195.118:1883");
 const topic1 = "broker1";
 const topic2 = "broker2";
 
