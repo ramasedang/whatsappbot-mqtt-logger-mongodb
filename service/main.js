@@ -24,29 +24,31 @@ wa.on("message", async (topic, message) => {
   console.log(data);
   switch (msg) {
     case "!halo":
-      sendWa(targetSender, "Halo juga " + data.name, topic);
+      await sendWa(targetSender, "Halo juga " + data.name, topic);
       break;
 
     case "!log":
       try {
-        let log = await getLogService();
-      sendWa(targetSender, log, topic);
+      let log =await getLogService();
+      await sendWa(targetSender, log, topic);
       break;
       } catch (error) {
         console.log(error);
+        break;
       }
 
     case "!delete":
       try {
-        let deleteLog = await deleteAll();
-      sendWa(targetSender, "Berhasil mengahpus log", topic);
+      await deleteAll();
+      await sendWa(targetSender, "Berhasil mengahpus log", topic);
       break;
       } catch (error) {
         console.log(error);
+        break;
       }
 
     case "!help":
-      sendWa(
+      await sendWa(
         targetSender,
         "Berikut adalah perintah yang tersedia:\n!halo\n!log\n!delete\n!help",
         topic
@@ -55,7 +57,7 @@ wa.on("message", async (topic, message) => {
 
     // masukan perintah lainnya disini
     default:
-      sendWa(targetSender, "Maaf, perintah tidak dikenali", topic);
+      await sendWa(targetSender, "Maaf, perintah tidak dikenali", topic);
       break;
   }
 });
