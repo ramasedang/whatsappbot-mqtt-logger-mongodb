@@ -54,7 +54,15 @@ wa.on("message", async (topic, message) => {
     } catch (error) {
       console.log(error);
     }
-  } else {
+  } else if (msg === "!log") {
+    let result = await getLogService();
+    await sendWa(targetSender, result, topic1);
+  } else if (msg === "!delete") {
+    await deleteAll();
+    await sendWa(targetSender, "Log berhasil dihapus", topic1);
+  }
+  // Masukan command baru disini
+  else {
     await sendWa(targetSender, "Maaf, perintah tidak ditemukan", topic1);
   }
 });
