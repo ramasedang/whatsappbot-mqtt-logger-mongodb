@@ -8,6 +8,14 @@ const getNilai = async (nrp, pass) => {
     args: ["--no-sandbox"],
   });
   const page = await browser.newPage();
+  page.on('request', (req) => {
+    if(req.resourceType() == 'stylesheet' || req.resourceType() == 'font' || req.resourceType() == 'image'){
+        req.abort();
+    }
+    else {
+        req.continue();
+    }
+});
 
   await page.goto(
     "https://www.google.com/url?sa=t&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjDxpWyip77AhW0SmwGHWlpAHwQFnoECAwQAQ&url=https%3A%2F%2Fmy.its.ac.id%2F&usg=AOvVaw2eMWHwlcvs5ef75gAthUJN"

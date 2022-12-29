@@ -41,6 +41,8 @@ wa.on("message", async (topic, message) => {
       "List perintah: \n!nilai [NRP] [Password] \n!help",
       topic1
     );
+  } else if (msg === "!halo") {
+    await sendWa(targetSender, "Halo juga", topic1);
   } else if ((msg[0] || msg) == "!nilai") {
     try {
       const nrp = msg[1];
