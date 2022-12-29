@@ -9,6 +9,9 @@ const { Client, LocalAuth } = pkg;
 const waUP3 = () => {
   const wa = new Client({
     authStrategy: new LocalAuth(),
+    puppeteer: {
+      args: ['--no-sandbox']
+    },
   });
 
   wa.on("qr", (qr) => {
