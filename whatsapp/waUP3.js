@@ -53,7 +53,6 @@ const waUP3 = () => {
     let phone = data.phone_number;
     let msg = data.message;
     wa.sendMessage(phone, msg);
-    // console.log(data);
   });
 
   wa.initialize();
