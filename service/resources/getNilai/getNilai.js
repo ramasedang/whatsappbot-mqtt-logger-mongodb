@@ -69,9 +69,8 @@ const getNilai = async (nrp, pass) => {
   for (let i = 0; i < data.length; i++) {
     msg += `Mata Kuliah: ${data[i].matkul}\nSKS: ${data[i].sks}\nNilai: ${data[i].nilai}\n\n`;
   }
-
-  return msg;
   await browser.close();
+  return msg;
 };
 
 export default getNilai;
