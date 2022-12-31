@@ -4,8 +4,6 @@ import mqtt from "mqtt";
 import { MongoStore } from "wwebjs-mongo";
 import mongoose from "mongoose";
 
-
-
 const { Client, LocalAuth, RemoteAuth } = pkg;
 
 const waUP3 = () => {

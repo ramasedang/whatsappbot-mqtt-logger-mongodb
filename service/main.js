@@ -1,6 +1,7 @@
 import mqtt from "mqtt";
 import { deleteAll, getLogService } from "./resources/getLogService.js";
 import getNilai from "./resources/getNilai/getNilai.js";
+import presensi from "./resources/presensi/presensiService.js";
 const wa = mqtt.connect("mqtt://8.219.195.118:1883");
 const topic1 = "broker1";
 const topic2 = "broker2";
@@ -60,7 +61,12 @@ wa.on("message", async (topic, message) => {
   } else if (msg === "!delete") {
     await deleteAll();
     await sendWa(targetSender, "Log berhasil dihapus", topic1);
+  } else if ((msg[0] || msg) === "!presensi") {
+    await sendWa(targetSender, "Sedang mengambil data...", topic1);
+    let result = await presensi(msg[1]);
+    await sendWa(targetSender, result, topic1);
   }
+  
   // Masukan command baru disini
   else {
     await sendWa(targetSender, "Maaf, perintah tidak ditemukan", topic1);
