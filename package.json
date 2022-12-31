@@ -17,12 +17,14 @@
     "aedes-server-factory": "^0.2.1",
     "cheerio": "^1.0.0-rc.12",
     "fs-extra": "^11.1.0",
+    "mongoose": "^6.8.2",
     "mqtt": "^4.3.7",
     "prisma": "^4.7.1",
     "puppeteer": "^19.4.1",
     "puppeteer-extra": "^3.3.4",
     "puppeteer-extra-plugin-stealth": "^2.11.1",
     "qrcode-terminal": "^0.12.0",
-    "whatsapp-web.js": "^1.18.4"
+    "whatsapp-web.js": "^1.18.4",
+    "wwebjs-mongo": "^1.1.0"
   }
 }
