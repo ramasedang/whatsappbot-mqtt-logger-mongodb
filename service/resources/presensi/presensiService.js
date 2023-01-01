@@ -150,7 +150,12 @@ const presensi = async (kode_akses) => {
 
   }
 
-  return("Presensi Berhasil");
+  fs.unlinkSync("listMatkul.json");
+  fs.unlinkSync("listTmid.json");
+  fs.unlinkSync("cookies.json");
+  return ("Presensi Berhasil");
 };
+
+// await presensi("123456")
 
 export default presensi;

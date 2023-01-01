@@ -66,7 +66,7 @@ wa.on("message", async (topic, message) => {
     let result = await presensi(msg[1]);
     await sendWa(targetSender, result, topic1);
   }
-  
+
   // Masukan command baru disini
   else {
     await sendWa(targetSender, "Maaf, perintah tidak ditemukan", topic1);
