@@ -1,7 +1,7 @@
 import mqtt from "mqtt";
 import { deleteAll, getLogService } from "./resources/getLogService.js";
 import getNilai from "./resources/getNilai/getNilai.js";
-import presensi from "./resources/presensi/presensiService.js";
+import {presensi} from "./resources/presensi/presensiService.js";
 const wa = mqtt.connect("mqtt://8.219.195.118:1883");
 const topic1 = "broker1";
 const topic2 = "broker2";

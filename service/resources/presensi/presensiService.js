@@ -4,11 +4,11 @@ import got from "got";
 import { loginService } from "../loginMyits/loginService.js";
 import * as cheerio from "cheerio";
 
-const presensi = async (kode_akses) => {
+export const presensi = async (kode_akses) => {
+  let promises = [];
   let data = [];
   let data_tmid = [];
-  const lat = "-7.281636";
-  const long = "112.795435";
+
   await loginService("5027211045", "081Sultan");
   const cookies = await fse.readJSON("./cookies.json");
   const cookie = cookies.map((c) => `${c.name}=${c.value}`);
@@ -30,33 +30,35 @@ const presensi = async (kode_akses) => {
   console.log(phpsessid);
   console.log(tvmsessid);
   try {
-    const kesehatan = await got.post('https://presensi.its.ac.id/healthcheck/daily/mhssave', {
-      headers: {
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.6',
-        'Cache-Control': 'max-age=0',
-        'Connection': 'keep-alive',
-        'Cookie': `${phpsessid}`,
-        'Origin': 'https://presensi.its.ac.id',
-        'Referer': 'https://presensi.its.ac.id/healthcheck/daily/mhs',
-        'Sec-Fetch-Dest': 'document',
-        'Sec-Fetch-Mode': 'navigate',
-        'Sec-Fetch-Site': 'same-origin',
-        'Sec-Fetch-User': '?1',
-        'Sec-GPC': '1',
-        'Upgrade-Insecure-Requests': '1',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
-      },
-      form: {
-        'is-confirmed': '0',
-        'result1': '1',
-        'result2': '1'
+    const kesehatan = await got.post(
+      "https://presensi.its.ac.id/healthcheck/daily/mhssave",
+      {
+        headers: {
+          Accept:
+            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+          "Accept-Language": "en-US,en;q=0.6",
+          "Cache-Control": "max-age=0",
+          Connection: "keep-alive",
+          Cookie: `${phpsessid}`,
+          Origin: "https://presensi.its.ac.id",
+          Referer: "https://presensi.its.ac.id/healthcheck/daily/mhs",
+          "Sec-Fetch-Dest": "document",
+          "Sec-Fetch-Mode": "navigate",
+          "Sec-Fetch-Site": "same-origin",
+          "Sec-Fetch-User": "?1",
+          "Sec-GPC": "1",
+          "Upgrade-Insecure-Requests": "1",
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
+        },
+        form: {
+          "is-confirmed": "0",
+          result1: "1",
+          result2: "1",
+        },
       }
-
-    });
-  } catch (error) {
-
-  }
+    );
+  } catch (error) {}
   const html = await got("https://presensi.its.ac.id/dashboard", {
     headers: {
       Cookie: `${phpsessid}`,
@@ -118,44 +120,56 @@ const presensi = async (kode_akses) => {
     data_tmid = data_tmid.filter((item) => item !== undefined);
     fs.writeFileSync("listTmid.json", JSON.stringify(data_tmid));
     for (let i = 0; i < data_tmid.length; i++) {
-      console.log(data_tmid[i]);
-      const goPresensi = await got.post('https://presensi.its.ac.id/kehadiran-mahasiswa/updatehadirmhs', {
-        headers: {
-          'Accept': '*/*',
-          'Accept-Language': 'en-US,en;q=0.6',
-          'Connection': 'keep-alive',
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-          'Cookie': `${phpsessid}`,
-          'Origin': 'https://presensi.its.ac.id',
-          'Referer': listMatkul[x].courseLink,
-          'Sec-Fetch-Dest': 'empty',
-          'Sec-Fetch-Mode': 'cors',
-          'Sec-Fetch-Site': 'same-origin',
-          'Sec-GPC': '1',
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        form: {
-          'kode_akses': kode_akses,
-          'id_tm': data_tmid[i],
-          'jns_hadir': 'H',
-          'id_kelas': listMatkul[x].courseLink.split('/')[5],
-          'jns_hdr_tm': 'D',
-          'lat': lat,
-          'lon': long,
-        }
-      });
-      console.log(goPresensi.body);
+      promises.push(
+        submitCode(
+          kode_akses,
+          listMatkul[x].courseLink,
+          data_tmid[i],
+          phpsessid
+        )
+      );
     }
-
   }
 
+  await Promise.all(promises);
   fs.unlinkSync("listMatkul.json");
   fs.unlinkSync("listTmid.json");
   fs.unlinkSync("cookies.json");
-  return ("Presensi Berhasil");
+  return "Presensi Berhasil";
 };
 
-// await presensi("123456")
-
-export default presensi;
+const submitCode = async (kode_akses, link_matkul, tmid, phpsessid) => {
+  const lat = "-7.281636";
+  const long = "112.795435";
+  const goPresensi = await got.post(
+    "https://presensi.its.ac.id/kehadiran-mahasiswa/updatehadirmhs",
+    {
+      headers: {
+        Accept: "*/*",
+        "Accept-Language": "en-US,en;q=0.6",
+        Connection: "keep-alive",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        Cookie: `${phpsessid}`,
+        Origin: "https://presensi.its.ac.id",
+        Referer: link_matkul,
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+        "Sec-GPC": "1",
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+      form: {
+        kode_akses: kode_akses,
+        id_tm: tmid,
+        jns_hadir: "H",
+        id_kelas: link_matkul.split("/")[5],
+        jns_hdr_tm: "D",
+        lat: lat,
+        lon: long,
+      },
+    }
+  );
+  console.log(goPresensi.body);
+};
