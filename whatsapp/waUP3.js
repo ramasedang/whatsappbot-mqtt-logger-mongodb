@@ -11,7 +11,7 @@ const waUP3 = () => {
     .connect(
       "mongodb+srv://root:root@cluster0.ateetri.mongodb.net/%3FretryWrites=true&w=majority"
     )
-    .then( () => {
+    .then(() => {
       const waMqtt = mqtt.connect("mqtt://8.219.195.118:1883");
       const store = new MongoStore({ mongoose: mongoose });
 
@@ -34,6 +34,7 @@ const waUP3 = () => {
       });
 
       wa.on("message", async (message) => {
+        let broker1 = "broker1";
         const isGroupMsg = message.from.includes("@g.us");
         let typeChat = isGroupMsg ? "group" : "private";
         let test = await message.getQuotedMessage();
@@ -42,6 +43,12 @@ const waUP3 = () => {
         let no_sender = (await message.getContact()).number;
         let no_group = "null";
         let targetSender = message.from;
+        let mediaData = "null";
+        let havemedia = message.hasMedia;
+        if (havemedia) {
+          mediaData = await message.downloadMedia();
+        }
+
         if (typeChat == "group") {
           no_group = message.from.split("@")[0];
         }
@@ -53,17 +60,19 @@ const waUP3 = () => {
             no_group,
             msg,
             quote,
+            mediaData,
             targetSender,
           })
         );
         waMqtt.publish(
-          "broker1",
+          broker1,
           JSON.stringify({
             name,
             no_sender,
             no_group,
             msg,
             quote,
+            mediaData,
             targetSender,
           })
         );
