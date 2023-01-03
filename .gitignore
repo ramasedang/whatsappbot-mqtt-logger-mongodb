@@ -37,3 +37,4 @@ lerna-debug.log*
 
 #storage
 src/backend-app/src/uploads
+yarn.lock
