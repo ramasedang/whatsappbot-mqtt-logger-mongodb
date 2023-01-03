@@ -75,11 +75,13 @@ wa.on("message", async (topic, message) => {
       await sendWa(targetSender, result, topic1);
     } else if (msg === "") {
       wa.publish("broker1/voice", JSON.stringify(data));
-    } else {
-      await sendWa(targetSender, "Maaf, perintah tidak ditemukan", topic1);
+    } else if (msg === "halo") {
+      await sendWa(targetSender, "Halo juga", topic1);
+    } else if (msg === "sekarang tanggal berapa") {
+      let tanggal = new Date();
+      await sendWa(targetSender, tanggal, topic1);
     }
   }
-
   // Masukan command baru disini
   else {
     await sendWa(targetSender, "Maaf, perintah tidak ditemukan", topic1);
