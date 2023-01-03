@@ -79,6 +79,7 @@ wa.on("message", async (topic, message) => {
       await sendWa(targetSender, "Halo juga", topic1);
     } else if (msg[0] === "sekarang" && msg[2] === "berapa") {
       let tanggal = new Date();
+      tanggal = tanggal.toLocaleString("id-ID", { timeZone: "Asia/Jakarta" });
       await sendWa(targetSender, tanggal, topic1);
     }
   }
