@@ -77,7 +77,7 @@ wa.on("message", async (topic, message) => {
       wa.publish("broker1/voice", JSON.stringify(data));
     } else if (msg === "halo") {
       await sendWa(targetSender, "Halo juga", topic1);
-    } else if (msg === "sekarang tanggal berapa") {
+    } else if (msg[0] === "sekarang" && msg[2] === "berapa") {
       let tanggal = new Date();
       await sendWa(targetSender, tanggal, topic1);
     }
