@@ -29,7 +29,7 @@ const getNilai = async (nrp, pass) => {
       req.continue();
     }
   });
-  await page.setRequestInterception(true)
+  await page.setRequestInterception(true);
   await page.goto(
     "https://www.google.com/url?sa=t&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjDxpWyip77AhW0SmwGHWlpAHwQFnoECAwQAQ&url=https%3A%2F%2Fmy.its.ac.id%2F&usg=AOvVaw2eMWHwlcvs5ef75gAthUJN"
   );
@@ -74,7 +74,7 @@ const getNilai = async (nrp, pass) => {
     //remove whitespace
     nilai = nilai.replace(/\s/g, "");
     let sks = data[i].sks;
-    sks = sks.replace(/\s/g, "")
+    sks = sks.replace(/\s/g, "");
     sks = parseInt(sks);
 
     if (nilai == "A") {
@@ -102,17 +102,13 @@ const getNilai = async (nrp, pass) => {
       nilai_ips += 0;
       sks_ips += 0;
     }
-
-    let ips = nilai_ips / sks_ips;
-    ips = ips.toFixed(2);
-    msg += `IPS: ${ips}\n`;
-    msg += `Total SKS: ${sks_ips}\n\n`;
-  
   }
+  let ips = nilai_ips / sks_ips;
+  ips = ips.toFixed(2);
+  msg += `IPS: ${ips}\n`;
+  msg += `Total SKS: ${sks_ips}\n\n`;
   await browser.close();
   return msg;
 };
-
-
 
 export default getNilai;
