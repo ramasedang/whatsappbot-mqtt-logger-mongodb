@@ -1,31 +1,19 @@
 import got from 'got';
 
-const response = await got.post('https://presensi.its.ac.id/kehadiran-mahasiswa/updatehadirmhs', {
+const response = await got('https://shortener.its.ac.id/', {
     headers: {
-        'Accept': '*/*',
-        'Accept-Language': 'en-US,en;q=0.6',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
         'Connection': 'keep-alive',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'Cookie': 'PHPSESSID=v1p74o69slk5gjqggnlqv8okq6',
-        'Origin': 'https://presensi.its.ac.id',
-        'Referer': 'https://presensi.its.ac.id/tatap-muka/20221:53100:IT184304:A',
-        'Sec-Fetch-Dest': 'empty',
-        'Sec-Fetch-Mode': 'cors',
-        'Sec-Fetch-Site': 'same-origin',
+        'Cookie': 'PHPSESSID=oibei1s39duhvn0cc9c3q5pvob; XSRF-TOKEN=eyJpdiI6Ijc1WExkbG5INlljRk9rZlJrdWhYQnc9PSIsInZhbHVlIjoibHRCNkZxQVZXdmVMWUdVUzJVZlFieGVcLytVZUNLcVRBNDEycnJ5ZGVOdlVcL3drRUZIK2JJaERxQWxKTkptSHlha2V1VU5wVmVwVVlHQkhQUnl1cEpVUT09IiwibWFjIjoiMjEzYWM2NzVhNTk3M2Q1YTUxOTdmMGZkOTQ4ZjFjMTlhYTMyOGNiZGY4OWY3N2I5YmJkMWE3Y2IwMmM5YmNmMyJ9; laravel_session=eyJpdiI6IkVwalwvMUU1SUQ0bW4yXC9IeFwvZTRLRlE9PSIsInZhbHVlIjoiYlBqQ2FIUVNzcXgrZkZoZ0J4RGlRZ1wvUEtiYlpzdmZWaHpvazI1OTRxZkR6VDlKamNnYzRib29Ba1l3WjFNc3VtUjlSejJITWpcLzJwU1krQlBmME5Ndz09IiwibWFjIjoiYzlhODgzZGJmNWU5MzdlZTg0MTZjZTEyNTdiMmY4YzNjYmE4ZDgyZGYyZmNkMDkwMzVmNmFjMWEyNTkzMGQwOCJ9',
+        'Referer': 'https://my.its.ac.id/',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'same-site',
+        'Sec-Fetch-User': '?1',
         'Sec-GPC': '1',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
-        'X-Requested-With': 'XMLHttpRequest'
-    },
-    form: {
-        'kode_akses': '722019',
-        'id_tm': '405906',
-        'jns_hadir': 'H',
-        'id_kelas': '20221:53100:IT184304:A',
-        'jns_hdr_tm': 'L',
-        'lat': '-7.2484',
-        'lon': '112.7419'
+        'Upgrade-Insecure-Requests': '1',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
     }
-    
 });
-
 console.log(response.body);
