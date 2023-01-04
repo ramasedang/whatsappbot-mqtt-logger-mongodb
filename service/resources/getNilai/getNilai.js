@@ -1,14 +1,5 @@
 import puppeteer from "puppeteer";
 import * as cheerio from "cheerio";
-const A = 4.0;
-const AB = 3.5;
-const B = 3.0;
-const BC = 2.5;
-const C = 2.0;
-const D = 1.0;
-let nilai_sementara = 0;
-let sks_sementara = 0;
-let nilai_akhir = nilai_sementara / sks_sementara;
 
 const getNilai = async (nrp, pass) => {
   var data = [];
@@ -38,7 +29,7 @@ const getNilai = async (nrp, pass) => {
       req.continue();
     }
   });
-
+  await page.setRequestInterception(true)
   await page.goto(
     "https://www.google.com/url?sa=t&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjDxpWyip77AhW0SmwGHWlpAHwQFnoECAwQAQ&url=https%3A%2F%2Fmy.its.ac.id%2F&usg=AOvVaw2eMWHwlcvs5ef75gAthUJN"
   );
@@ -75,35 +66,53 @@ const getNilai = async (nrp, pass) => {
   }
   data.shift();
   let msg = "";
+  let nilai_ips = 0;
+  let sks_ips = 0;
   for (let i = 0; i < data.length; i++) {
     msg += `Mata Kuliah: ${data[i].matkul}\nSKS: ${data[i].sks}\nNilai: ${data[i].nilai}\n\n`;
-    hitungNilai(data[i].sks, data[i].nilai);
+    let nilai = data[i].nilai;
+    //remove whitespace
+    nilai = nilai.replace(/\s/g, "");
+    let sks = data[i].sks;
+    sks = sks.replace(/\s/g, "")
+    sks = parseInt(sks);
+
+    if (nilai == "A") {
+      nilai_ips += 4 * sks;
+      sks_ips += sks;
+    } else if (nilai == "AB") {
+      nilai_ips += 3.5 * sks;
+      sks_ips += sks;
+    } else if (nilai == "B") {
+      nilai_ips += 3 * sks;
+      sks_ips += sks;
+    } else if (nilai == "BC") {
+      nilai_ips += 2.5 * sks;
+      sks_ips += sks;
+    } else if (nilai == "C") {
+      nilai_ips += 2 * sks;
+      sks_ips += sks;
+    } else if (nilai == "D") {
+      nilai_ips += 1 * sks;
+      sks_ips += sks;
+    } else if (nilai == "E") {
+      nilai_ips += 0 * sks;
+      sks_ips += sks;
+    } else {
+      nilai_ips += 0;
+      sks_ips += 0;
+    }
+
+    let ips = nilai_ips / sks_ips;
+    ips = ips.toFixed(2);
+    msg += `IPS: ${ips}\n`;
+    msg += `Total SKS: ${sks_ips}\n\n`;
+  
   }
-  msg += `IPS: ${nilai_akhir}`;
   await browser.close();
   return msg;
 };
 
-const hitungNilai = async (sks, nilai) => {
-  if (nilai == "A") {
-    nilai_sementara += sks * A;
-    sks_sementara += sks;
-  } else if (nilai == "AB") {
-    nilai_sementara += sks * AB;
-    sks_sementara += sks;
-  } else if (nilai == "B") {
-    nilai_sementara += sks * B;
-    sks_sementara += sks;
-  } else if (nilai == "BC") {
-    nilai_sementara += sks * BC;
-    sks_sementara += sks;
-  } else if (nilai == "C") {
-    nilai_sementara += sks * C;
-    sks_sementara += sks;
-  } else if (nilai == "D") {
-    nilai_sementara += sks * D;
-    sks_sementara += sks;
-  }
-};
+
 
 export default getNilai;
